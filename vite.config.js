@@ -6,4 +6,9 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   base:'/',
   plugins: [react(),tailwindcss()],
+  build:{
+     rollupOptions: {
+      external: ['hls.js'], // beri tahu Rollup jangan bundle hls.js
+    },
+  }
 })
