@@ -55,7 +55,6 @@ const StreamingMovies = () => {
 
     let hls;
 
-    const initHls = async () => {
      
       if (Hls.isSupported()) {
         hls = new Hls({
@@ -75,9 +74,9 @@ const StreamingMovies = () => {
       } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
         videoRef.current.src = selectedLink;
       }
-    };
+    
 
-    initHls();
+    
 
     return () => {
       if (hls) hls.destroy();
