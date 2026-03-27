@@ -4,7 +4,9 @@ import NavBar from '../components/navbar';
 import EpisodeSelector from '../components/EpisodeSelector';
 import { FiServer } from 'react-icons/fi';
 import { FaClock, FaStar, FaCalendarAlt } from 'react-icons/fa';
-
+// HAPUS INI
+const HlsModule = await import('hls.js');
+const Hls = HlsModule.default;
 const StreamingMovies = () => {
   const { slug, type } = useParams();
   const [data, setData] = useState(null);
@@ -54,9 +56,7 @@ const StreamingMovies = () => {
     let hls;
 
     const initHls = async () => {
-      const HlsModule = await import('hls.js');
-      const Hls = HlsModule.default;
-
+     
       if (Hls.isSupported()) {
         hls = new Hls({
           maxBufferLength: 30,
