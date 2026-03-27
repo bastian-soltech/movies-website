@@ -8,34 +8,35 @@ import "swiper/css";
 const Hero = React.memo(({ Movies = [], source = "filmapik" }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // ✅ Cegah re-render kalau Movies kosong
-  if (!Movies.length) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950">
-        <div className="text-center space-y-4">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-slate-400">Loading amazing movies...</p>
-        </div>
-      </div>
-    );
-  }
+  // Cegah re-render kalau Movies kosong
+  // if (!Movies.length) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-slate-950">
+  //       <div className="text-center space-y-4">
+  //         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  //         <p className="text-slate-400">Loading amazing movies...</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
-  // ✅ Gunakan useCallback agar fungsi tidak dibuat ulang setiap render
+  // Gunakan useCallback agar fungsi tidak dibuat ulang setiap render
   const handleSlideChange = useCallback((swiper) => {
     setActiveIndex(swiper.realIndex);
   }, []);
 
-  // ✅ Cache movie aktif agar tidak hitung ulang tiap render
+  //  Cache movie aktif agar tidak hitung ulang tiap render
   const activeMovie = useMemo(() => Movies[activeIndex] || {}, [Movies, activeIndex]);
-
-  // ✅ Cache daftar slide agar tidak render ulang tiap index berubah
+// console.log("cover",Movies)
+  //  Cache daftar slide agar tidak render ulang tiap index berubah
   const slides = useMemo(
     () =>
       Movies.map((poster, index) => (
+        // 
         <SwiperSlide key={index} className="hero-swiper-slide">
           <div className="relative group">
             <img
-              src={poster.posterUrls}
+              src={poster.share_info.cover.url3}
               alt={`Poster ${index + 1}`}
               className="rounded-2xl object-cover h-full w-full shadow-2xl transition-all duration-500 group-hover:shadow-blue-500/50"
               loading="lazy"
@@ -53,14 +54,15 @@ const Hero = React.memo(({ Movies = [], source = "filmapik" }) => {
 
   return (
     <div className="relative min-h-screen overflow-hidden pt-20 max-w-[100vw]">
-      {/* ✅ Background — gunakan memoized activeMovie agar tidak render ulang */}
+      {/*  Background — gunakan memoized activeMovie agar tidak render ulang */}
       <div className="absolute inset-0 top-0">
+        {/* {console.log('activeMovie ',activeMovie)} */}
         <div
           className="absolute inset-0 bg-cover bg-center transition-all duration-1000 will-change-transform"
           style={{
-            backgroundImage: `url(${activeMovie.posterUrls})`,
-            filter: "blur(20px) brightness(0.3)",
-            transform: "scale(1.2)",
+            backgroundImage: `url(${activeMovie.share_info.thumbs.url3})`,
+            filter: "blur(2px)",
+            // transform: "scale(1.2)",
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/50 to-slate-950"></div>
@@ -75,16 +77,16 @@ const Hero = React.memo(({ Movies = [], source = "filmapik" }) => {
       <div className="relative z-10 min-h-screen flex items-center overflow-hidden">
         <div className="container mx-auto px-4 lg:px-8 py-20 max-w-full overflow-hidden">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* 🧠 Teks */}
+         
             <div className="text-white space-y-8 text-center lg:text-left">
-              <div className="inline-flex items-center space-x-2 bg-blue-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full px-4 py-2">
+              {/* <div className="inline-flex items-center space-x-2 bg-blue-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full px-4 py-2">
                 <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
                 <span className="text-blue-300 text-sm font-medium">Featured Movie</span>
-              </div>
+              </div> */}
 
               <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
                 <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
-                  {activeMovie.moviesTitle}
+                  {activeMovie.resource_info.process_name}
                 </span>
               </h1>
 
@@ -95,13 +97,13 @@ const Hero = React.memo(({ Movies = [], source = "filmapik" }) => {
                     <span className="text-white font-semibold">{activeMovie.rating}</span>
                   </div>
                   <div className="h-6 w-px bg-slate-600"></div>
-                  <span className="text-slate-300">2024</span>
+                  <span className="text-slate-300">2024 </span>
                 </div>
               )}
 
               {activeMovie.description && (
                 <p className="text-slate-300 text-lg leading-relaxed max-w-2xl">
-                  {activeMovie.description}
+                  {activeMovie}
                 </p>
               )}
 
@@ -110,7 +112,7 @@ const Hero = React.memo(({ Movies = [], source = "filmapik" }) => {
                 <a
                   href={
                     source === "filmapik"
-                      ? `/movies/streaming/${activeMovie.moviesTitle}/movie`
+                      ? `/movies/streaming/${activeMovie.resource_info.enid}/movie`
                       : `/ny21-indo/movies/streaming/${activeMovie.moviesTitle}`
                   }
                   className="group relative inline-flex items-center space-x-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/50"

@@ -1,23 +1,23 @@
 import { memo, useMemo } from "react";
 import { FiPlay, FiStar } from "react-icons/fi";
 
-function MoviesCard({ movie, index, source = "filmapik" }) {
+function MoviesCard({posterUrls,movieTitle,rating}) {
   // Gunakan useMemo untuk menghindari perhitungan ulang href tiap render
-  const href = useMemo(() => {
-    const title = encodeURIComponent(movie.moviesTitle || `movie-${index + 1}`);
-    return source === "filmapik"
-      ? `/movies/streaming/${title}/movie`
-      : `/ny21-indo/movies/streaming/${title}`;
-  }, [movie.moviesTitle, index, source]);
+  // const href = useMemo(() => {
+  //   const title = encodeURIComponent(movie.moviesTitle || `movie-${index + 1}`);
+  //   return source === "filmapik"
+  //     ? `/movies/streaming/${title}/movie`
+  //     : `/ny21-indo/movies/streaming/${title}`;
+  // }, [movie.moviesTitle, index, source]);
 
   // Hindari re-render jika prop tidak berubah
   return (
-    <a href={href} className="group relative block will-change-transform">
+    <a className="group relative block will-change-transform">
       <div className="relative h-0 pb-[150%] overflow-hidden rounded-xl shadow-2xl transition-all duration-500 hover:shadow-blue-500/20">
         {/* Lazy Loaded Image */}
         <img
-          src={movie.posterUrls}
-          alt={movie.moviesTitle || `Movie ${index + 1}`}
+          src={posterUrls}
+          alt={movieTitle || `Movie ${index + 1}`}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           loading="lazy"
           decoding="async"
@@ -41,16 +41,16 @@ function MoviesCard({ movie, index, source = "filmapik" }) {
         <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
           <h3
             className="text-white text-sm md:text-base font-semibold line-clamp-2 mb-2 drop-shadow-lg"
-            title={movie.moviesTitle}
+            title={movieTitle}
           >
-            {movie.moviesTitle}
+            {movieTitle}
           </h3>
 
-          {movie.rating && (
+          {rating && (
             <div className="flex items-center space-x-1 bg-slate-900/80 backdrop-blur-sm rounded-full px-3 py-1 w-fit">
               <FiStar className="text-yellow-400 text-xs" />
               <span className="text-yellow-400 text-xs font-medium">
-                {movie.rating}
+                {rating}
               </span>
             </div>
           )}
@@ -62,6 +62,4 @@ function MoviesCard({ movie, index, source = "filmapik" }) {
     </a>
   );
 }
-
-// ✅ Gunakan React.memo agar komponen tidak re-render tanpa perubahan props
 export default memo(MoviesCard);

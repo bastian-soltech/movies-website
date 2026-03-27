@@ -1,9 +1,13 @@
 import { useEffect, useState, useMemo, Suspense, lazy } from 'react'
 import '../App.css'
+import TvShow from '../components/TvShow'
+import PopularAnimation from '../components/HotAnimation'
+// import PopularMovies from '../components/PopularMovies'
 
 // Lazy load komponen besar untuk mengurangi bundle awal
 const NavBar = lazy(() => import('../components/navbar'))
 const Hero = lazy(() => import('../components/hero'))
+const PopularMovies = lazy(() => import('../components/PopularMovies'))
 const Trending = lazy(() => import('../components/trending'))
 const Latest = lazy(() => import('../components/Latest'))
 const Faq = lazy(() => import('../components/Faq'))
@@ -11,36 +15,45 @@ const Footer = lazy(() => import('../components/Footer'))
 
 function App() {
   const [movies, setMovies] = useState({
-    top: [],
-    trending: [],
-    latest: [],
+    hot:[],
+    tvShow:[],
+    animation:[]
+    
+    // top: [],
+    // trending: [],
+    // latest: [],
   })
   const [loading, setLoading] = useState(true)
 
-  const base_api = useMemo(() => 'https://profesor-api.vercel.app', [])
+  const base_api = useMemo(() => 'https://nonton-yuk-api.vercel.app', [])
 
   useEffect(() => {
     let isMounted = true // hindari memory leak
     const getMovies = async () => {
       try {
         const urls = [
-          `${base_api}/api/movies/v1/box-office?page=1`,
-          `${base_api}/api/movies/v1/trending?page=1`,
-          `${base_api}/api/movies/v1/latest?page=1`,
+          `${base_api}/api/hot-movies/1/1`,
+          `${base_api}/api/hot-movies/2/1`,
+          `${base_api}/api/hot-movies/3/1`,
+          // `${base_api}/api/movies/v1/trending?page=1`,
+          // `${base_api}/api/movies/v1/latest?page=1`,
+          // `${base_api}/api/movies/v2/indo-movie?page=1`,
         ]
 
         // Jalankan paralel + cache otomatis dari browser
-        const [topRes, trendRes, latestRes] = await Promise.all(
+        // trendRes, latestRes,indoRes
+        const [hotRes,tvShowRes,AnimationRes] = await Promise.all(
           urls.map((url) =>
             fetch(url, { cache: 'force-cache' }).then((r) => r.json())
           )
         )
 
         if (!isMounted) return
+        console.log("hot", hotRes)
         setMovies({
-          top: topRes.data || [],
-          trending: trendRes.data || [],
-          latest: latestRes.data || [],
+          hot: hotRes.detail || [],
+          tvShow: tvShowRes.detail || [],
+          animation: AnimationRes.detail || [],
         })
       } catch (error) {
         console.error('Error fetching movies:', error)
@@ -75,19 +88,23 @@ function App() {
       >
         <NavBar source="filmapik" />
         <main>
-          {movies.top.length > 0 && <Hero Movies={movies.top} />}
-
-          <div className="space-y-16 pb-20">
-            {movies.trending.length > 0 && (
-              <Trending trendingMovies={movies.trending} />
+          <Hero Movies={movies.hot} />
+          <div className="space-y-16 pb-20 mt-10">
+            <PopularMovies popularMovies={movies.hot}/>
+            <TvShow Serial={movies.tvShow}/>            
+            <PopularAnimation popularAnimation={movies.animation}/>           
+            {/* {movies.trending.data.length > 0 && (
+              <Trending trendingMovies={movies.trending.data} />
             )}
-            {movies.latest.length > 0 && (
-              <Latest LatestMovies={movies.latest} />
+            {movies.latest.data.length > 0 && (
+              <Latest LatestMovies={movies.latest.data} />
             )}
+            {movies.indo.length > 0 && (
+              <IndoMovies IndoMovies={movies.indo} />
+            )} */}
             <Faq />
           </div>
-        </main>
-
+      </main>
         <Footer />
       </Suspense>
     </div>

@@ -13,7 +13,7 @@ export default function SearchResult() {
   const [status, setStatus] = useState("idle"); // idle | loading | success | error
   const [error, setError] = useState(null);
 
-  const base_api = useMemo(() => "https://profesor-api.vercel.app", []);
+  const base_api = useMemo(() => "https://nonton-yuk-api.vercel.app", []);
 
   useEffect(() => {
     if (!query) return;
@@ -24,18 +24,39 @@ export default function SearchResult() {
       setError(null);
 
       try {
-        const response = await fetch(
-          `${base_api}/api/movies/v1/search?q=${encodeURIComponent(query)}`,
-          {
+        const urls = [
+          // `${base_api}/api/search?query=${encodeURIComponent(query)}`,
+          `${base_api}/v1/api/search?query=${encodeURIComponent(query)}`
+        ];
+
+        const responses = await Promise.all(
+          urls.map(url => fetch(url, { 
             signal: controller.signal,
-            cache: "force-cache", // pakai cache browser
-          }
+            cache: "force-cache" 
+          }))
         );
 
-        if (!response.ok) throw new Error("Failed to fetch movies");
+        const results = await Promise.all(
+          responses.map(async (res) => {
+            if (!res.ok) return { detail: [] };
+            try {
+              return await res.json();
+            } catch {
+              return { detail: [] };
+            }
+          })
+        );
 
-        const data = await response.json();
-        setMovies(Array.isArray(data) ? data : []);
+        // Combine all 'detail' arrays and deduplicate by 'id'
+        const combined = results.reduce((acc, curr) => {
+          return [...acc, ...(curr.detail || [])];
+        }, []);
+
+        // const uniqueMovies = Array.from(
+        //   new Map(combined.map(m => [m.resource_info?.id, m])).values()
+        // );
+
+        setMovies(combined);
         setStatus("success");
       } catch (err) {
         if (err.name !== "AbortError") {
@@ -100,23 +121,27 @@ export default function SearchResult() {
           {movies.length > 0 && (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
               {movies.map((movie, index) => {
-                const isMovie = movie.type === "Movies";
-                const safeTitle = movie.detailUrl
-                  ?.replace("Nonton", "")
-                  ?.replace("Sub Indo", "")
-                  ?.trim();
+                const info = movie.resource_info;
+                const share = movie.share_info;
+                const tag = info?.tag_info;
+                
+                // Construct clean title and slug
+                const title = info?.process_name || info?.name?.replace(/\.\w+$/, "") || "Unknown Movie";
+                const slug = info.enid;
+                
+                const poster =  share?.cover?.url3 || "https://via.placeholder.com/300x450?text=No+Poster";
 
                 return (
                   <a
                     key={index}
-                    href={`/movies/streaming/${safeTitle}/${isMovie ? "movie" : "series"}`}
+                    href={`/movies/streaming/${encodeURIComponent(slug)}/movie`}
                     className="group relative block will-change-transform"
                   >
                     <div className="relative h-0 pb-[150%] overflow-hidden rounded-xl shadow-2xl transition-all duration-500 hover:shadow-blue-500/20 hover:shadow-2xl">
                       {/* Lazy image loading */}
                       <img
-                        src={movie.poster}
-                        alt={movie.title}
+                        src={poster}
+                        alt={title}
                         loading="lazy"
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         onError={(e) => {
@@ -140,23 +165,23 @@ export default function SearchResult() {
                       {/* Movie Info */}
                       <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
                         <h3 className="text-white text-sm md:text-base font-semibold line-clamp-2 mb-2 drop-shadow-lg">
-                          {movie.title}
+                          {title}
                         </h3>
 
                         <div className="flex items-center gap-2">
-                          {movie.rating && (
+                          {info?.rating > 0 && (
                             <div className="flex items-center space-x-1 bg-slate-900/80 backdrop-blur-sm rounded-full px-3 py-1">
                               <FiStar className="text-yellow-400 text-xs" />
                               <span className="text-yellow-400 text-xs font-medium">
-                                {movie.rating}
+                                {info.rating}
                               </span>
                             </div>
                           )}
-                          {movie.year && (
+                          {(tag?.year || info?.product_year) && (
                             <div className="flex items-center space-x-1 bg-slate-900/80 backdrop-blur-sm rounded-full px-3 py-1">
                               <FiCalendar className="text-blue-400 text-xs" />
                               <span className="text-blue-400 text-xs font-medium">
-                                {movie.year}
+                                {tag?.year || info?.product_year}
                               </span>
                             </div>
                           )}
