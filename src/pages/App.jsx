@@ -8,8 +8,8 @@ import PopularAnimation from '../components/HotAnimation'
 const NavBar = lazy(() => import('../components/navbar'))
 const Hero = lazy(() => import('../components/hero'))
 const PopularMovies = lazy(() => import('../components/PopularMovies'))
-const Trending = lazy(() => import('../components/trending'))
-const Latest = lazy(() => import('../components/Latest'))
+// const Trending = lazy(() => import('../components/trending'))
+// const Latest = lazy(() => import('../components/Latest'))
 const Faq = lazy(() => import('../components/Faq'))
 const Footer = lazy(() => import('../components/Footer'))
 
