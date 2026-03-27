@@ -5,7 +5,7 @@ import { useSearchParams } from "react-router";
 // Lazy load komponen besar (kurangi initial bundle)
 const NavBar = lazy(() => import("../components/navbar"));
 
-export default function SearchResult() {
+export default function   SearchResult() {
   const [searchParams] = useSearchParams();
   const query = useMemo(() => searchParams.get("q")?.trim() || "", [searchParams]);
 
@@ -26,7 +26,7 @@ export default function SearchResult() {
       try {
           const fetchGlobal = async () => {
             const response = await fetch(
-                `${base_api}/api/movies/v1/search?q=${encodeURIComponent(query)}`,
+                `${base_api}/api/movies/search?q=${encodeURIComponent(query)}`,
                 { signal: controller.signal, cache: "force-cache" }
             );
             if (!response.ok) throw new Error("Gagal mengambil data film Global.");
