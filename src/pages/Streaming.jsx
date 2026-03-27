@@ -4,7 +4,7 @@ import NavBar from '../components/navbar';
 import EpisodeSelector from '../components/EpisodeSelector';
 import { FiServer } from 'react-icons/fi';
 import { FaClock, FaStar, FaCalendarAlt } from 'react-icons/fa';
-import Hls from 'hls.js';
+import Hls from 'hls.js/dist/hls.js';
 const StreamingMovies = () => {
   const { slug, type } = useParams();
   const [data, setData] = useState(null);
