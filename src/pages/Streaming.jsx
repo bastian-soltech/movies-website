@@ -2,8 +2,8 @@ import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useParams } from 'react-router';
 import NavBar from '../components/navbar';
 import EpisodeSelector from '../components/EpisodeSelector';
-import MoviesDescription from '../components/MoviesDescription';
-import ButtonServer from '../components/ButtonServer';
+import { FiServer } from 'react-icons/fi';
+import { FaClock, FaStar, FaCalendarAlt } from 'react-icons/fa';
 
 const StreamingMovies = () => {
   const { slug, type } = useParams();
@@ -24,9 +24,7 @@ const StreamingMovies = () => {
       if (!res.ok) throw new Error('Failed to fetch movie details');
       
       const json = await res.json();
-      console.log("streaming data",json.data);
-      
-      setData(json.data);
+      setData(json);
 
       // Construct streaming URL directly using parameters from metadata
       // No second fetch needed as the API serves the m3u8 directly
