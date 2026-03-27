@@ -5,7 +5,7 @@ import { useSearchParams } from "react-router";
 // Lazy load komponen besar (kurangi initial bundle)
 const NavBar = lazy(() => import("../components/navbar"));
 
-export default function   SearchResult() {
+export default function SearchResult() {
   const [searchParams] = useSearchParams();
   const query = useMemo(() => searchParams.get("q")?.trim() || "", [searchParams]);
 
@@ -24,44 +24,40 @@ export default function   SearchResult() {
       setError(null);
 
       try {
-          const fetchGlobal = async () => {
-            const response = await fetch(
-                `${base_api}/api/movies/search?q=${encodeURIComponent(query)}`,
-                { signal: controller.signal, cache: "force-cache" }
-            );
-            if (!response.ok) throw new Error("Gagal mengambil data film Global.");
-            const data = await response.json();
-            // Tambahkan properti 'source'='global'
-            return Array.isArray(data.data) ? data.data.map(m => ({...m, source: 'filmapik'})) : [];
-        };
+        const urls = [
+          // `${base_api}/api/search?query=${encodeURIComponent(query)}`,
+          `${base_api}/v1/api/search?query=${encodeURIComponent(query)}`
+        ];
 
-        // 2. FUNGSI FETCH UNTUK API INDONESIA (Indonesian Source)
-        const fetchIndo = async () => {
-            // GANTI '/api/indo-search' DENGAN ENDPOINT PENCARIAN INDO ANDA
-            const response = await fetch(
-                `${base_api}/api/movies/v2/search?q=${encodeURIComponent(query)}`,
-                { signal: controller.signal, cache: "force-cache" }
-            );
-            if (!response.ok) throw new Error("Gagal mengambil data film Indonesia.");
-            const data = await response.json(); 
-            return Array.isArray(data.data) ? data.data.map(m => ({...m, source: 'hostingaloha'})) : [];
-        };
-        // const data = await response.json();
-           const [globalResults, indoResults] = await Promise.all([
-         
-            fetchGlobal().catch(e => { console.error("Global API Error:", e.message); return []; }),
-            fetchIndo().catch(e => { console.error("Indo API Error:", e.message); return []; }),
-        ]);
-
-        const combinedResults = [...globalResults, ...indoResults];
-        
-        const uniqueResults = combinedResults.filter((movie, index, self) =>
-            index === self.findIndex((t) => (t.title === movie.title))
+        const responses = await Promise.all(
+          urls.map(url => fetch(url, { 
+            signal: controller.signal,
+            cache: "force-cache" 
+          }))
         );
-        setMovies(combinedResults);
-        if (combinedResults.length > 0) {
-          setStatus("success");
-        }
+
+        const results = await Promise.all(
+          responses.map(async (res) => {
+            if (!res.ok) return { detail: [] };
+            try {
+              return await res.json();
+            } catch {
+              return { detail: [] };
+            }
+          })
+        );
+
+        // Combine all 'detail' arrays and deduplicate by 'id'
+        const combined = results.reduce((acc, curr) => {
+          return [...acc, ...(curr.detail || [])];
+        }, []);
+
+        // const uniqueMovies = Array.from(
+        //   new Map(combined.map(m => [m.resource_info?.id, m])).values()
+        // );
+
+        setMovies(combined);
+        setStatus("success");
       } catch (err) {
         if (err.name !== "AbortError") {
           setError(err.message);
@@ -69,13 +65,16 @@ export default function   SearchResult() {
         }
       }
     };
+
     fetchMovies();
+
+    // cleanup → cancel fetch kalau user ganti query cepat
     return () => controller.abort();
   }, [query, base_api]);
 
+  // Precompute text untuk hasil
   const resultsText = useMemo(() => {
     if (!query) return "Please enter a search term";
-    if (status === "loading" || (status === "idle" && query)) return "Mencari film..."; 
     if (status === "loading") return "Searching movies...";
     if (status === "error") return `Error: ${error}`;
     if (movies.length === 0) return `No movies found for "${query}"`;
@@ -83,7 +82,7 @@ export default function   SearchResult() {
   }, [status, movies, query, error]);
 
   // Loading state global
-  if (status === "loading" || (status === "idle" && query) ) {
+  if (status === "loading") {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center space-y-4">
@@ -135,11 +134,9 @@ export default function   SearchResult() {
                 return (
                   <a
                     key={index}
-            
-                    href={ movie.source == 'filmapik'? `/movies/streaming/${safeTitle}/${isMovie ? "movie" : "series"}`:`/movies/streaming/${movie.encodeurl}`}
+                    href={`/movies/streaming/${encodeURIComponent(slug)}/movie`}
                     className="group relative block will-change-transform"
                   >
-                    {console.log(movie)}
                     <div className="relative h-0 pb-[150%] overflow-hidden rounded-xl shadow-2xl transition-all duration-500 hover:shadow-blue-500/20 hover:shadow-2xl">
                       {/* Lazy image loading */}
                       <img
