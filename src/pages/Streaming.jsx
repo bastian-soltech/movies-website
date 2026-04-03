@@ -4,10 +4,13 @@ import NavBar from '../components/navbar';
 import EpisodeSelector from '../components/EpisodeSelector';
 import { FiServer } from 'react-icons/fi';
 import { FaClock, FaStar, FaCalendarAlt } from 'react-icons/fa';
-import Hls from 'hls.js/dist/hls.js';
+import Hls from 'hls.js';
+
 const StreamingMovies = () => {
-  const { slug, type } = useParams();
+  const { slug } = useParams();
   const [data, setData] = useState(null);
+  const [series, setSeries] = useState(null);
+  const [activeEpisode, setActiveEpisode] = useState(0);
   const [selectedLink, setSelectedLink] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,12 +29,23 @@ const StreamingMovies = () => {
       const json = await res.json();
       setData(json);
 
-      // Construct streaming URL directly using parameters from metadata
-      // No second fetch needed as the API serves the m3u8 directly
-      const { uk, share_id, fs_id } = json.share_info;
-      const streamUrl = `https://nonton-yuk-api.vercel.app/api/stream?uk=${uk}&shareid=${share_id}&fid=${fs_id}`;
-      
-      setSelectedLink(streamUrl);
+      if (json.resource_info.tv_cnt > 0) {
+        const seriesResponse = await fetch(`https://nonton-yuk-api.vercel.app/api/get-series?id=${json.resource_info.id}`);
+        if (!seriesResponse.ok) throw new Error('Failed to fetch series data');
+        const seriesData = await seriesResponse.json();
+
+        setSeries(seriesData);
+        if (seriesData.list?.length > 0) {
+          setActiveEpisode(0);
+          const streamUrl = `https://nonton-yuk-api.vercel.app/api/stream?uk=${seriesData.root_info.uk}&shareid=${seriesData.root_info.share_id}&fid=${seriesData.list[0].fs_id}`;
+          setSelectedLink(streamUrl);
+        }
+      } else {
+        const { uk, share_id, fs_id } = json.share_info;
+        const streamUrl = `https://nonton-yuk-api.vercel.app/api/stream?uk=${uk}&shareid=${share_id}&fid=${fs_id}`;
+        setActiveEpisode(0);
+        setSelectedLink(streamUrl);
+      }
     } catch (err) {
       console.error('Fetch error:', err);
       setError(err.message);
@@ -44,8 +58,12 @@ const StreamingMovies = () => {
     fetchData();
   }, [fetchData]);
 
-  const handleEpisodeSelect = useCallback(async (episode) => {
-    console.log('Episode selected:', episode);
+  const handleEpisodeSelect = useCallback((root_info, ep, index) => {
+    setActiveEpisode(index);
+    console.log('ep',ep)
+    const streamUrl = `https://nonton-yuk-api.vercel.app/api/stream?uk=${root_info.uk}&shareid=${root_info.share_id}&fid=${ep}`;
+    setSelectedLink(streamUrl);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   useEffect(() => {
@@ -53,28 +71,24 @@ const StreamingMovies = () => {
 
     let hls;
 
-     
-      if (Hls.isSupported()) {
-        hls = new Hls({
-          maxBufferLength: 30,
-          maxMaxBufferLength: 60,
-          startLevel: -1,
-          abandonLoadTimeout: 3000,
-          enableWorker: true,
-          fragLoadingRetryDelay: 500,
-          manifestLoadingRetryDelay: 500
-        });
-        hls.loadSource(selectedLink);
-        hls.attachMedia(videoRef.current);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          videoRef.current.play().catch(e => console.error("Playback failed:", e));
-        });
-      } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
-        videoRef.current.src = selectedLink;
-      }
-    
-
-    
+    if (Hls.isSupported()) {
+      hls = new Hls({
+        maxBufferLength: 30,
+        maxMaxBufferLength: 60,
+        startLevel: -1,
+        abandonLoadTimeout: 3000,
+        enableWorker: true,
+        fragLoadingRetryDelay: 500,
+        manifestLoadingRetryDelay: 500
+      });
+      hls.loadSource(selectedLink);
+      hls.attachMedia(videoRef.current);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        videoRef.current.play().catch(e => console.error("Playback failed:", e));
+      });
+    } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
+      videoRef.current.src = selectedLink;
+    }
 
     return () => {
       if (hls) hls.destroy();
@@ -123,6 +137,29 @@ const StreamingMovies = () => {
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 py-12 space-y-10">
+        {series?.list?.length > 0 && (
+          <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700">
+            <h2 className="text-xl font-bold text-slate-100 mb-4 flex items-center gap-2">
+              <FiServer className="text-blue-500" /> Pilih Episode
+            </h2>
+            <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
+              {series.list.map((ep, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleEpisodeSelect(series.root_info, ep.fs_id, index)}
+                  className={`py-2 rounded-lg font-medium transition-all ${
+                    activeEpisode === index
+                      ? 'bg-blue-600 text-white ring-2 ring-blue-400'
+                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-6 space-y-6">
           <h1 className="text-3xl font-bold text-slate-100">
             {movieInfo?.personalized_name || movieInfo?.process_name || 'Untitled'}
