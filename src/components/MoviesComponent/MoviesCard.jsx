@@ -1,7 +1,7 @@
 import { memo, useMemo } from "react";
 import { FiPlay, FiStar } from "react-icons/fi";
 
-function MoviesCard({posterUrls,movieTitle,rating}) {
+function MoviesCard({posterUrls,movieTitle,rating,id}) {
   // Gunakan useMemo untuk menghindari perhitungan ulang href tiap render
   // const href = useMemo(() => {
   //   const title = encodeURIComponent(movie.moviesTitle || `movie-${index + 1}`);
@@ -12,7 +12,7 @@ function MoviesCard({posterUrls,movieTitle,rating}) {
 
   // Hindari re-render jika prop tidak berubah
   return (
-    <a className="group relative block will-change-transform">
+    <a href={`/movies/streaming/${id}/movie`} className="group relative block will-change-transform">
       <div className="relative h-0 pb-[150%] overflow-hidden rounded-xl shadow-2xl transition-all duration-500 hover:shadow-blue-500/20">
         {/* Lazy Loaded Image */}
         <img

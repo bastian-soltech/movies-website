@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FiClock, FiPlay, FiStar } from "react-icons/fi";
 import NavBar from "../components/navbar";
 import MoviesCard from "../components/MoviesComponent/MoviesCard";
+import { IoCompassOutline } from "react-icons/io5";
 
 export default function PopularMoviesPage() {
     const [Popular, setPopular] = useState([]);
@@ -113,9 +114,10 @@ export default function PopularMoviesPage() {
               <>
                 {/* Movies Grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-12">
+                  {console.log('popular',Popular)}
                   {Popular.map((movie) => (
                     // console.log('movie',movie)
-                      <MoviesCard posterUrls={movie.share_info.cover.url3} movieTitle={movie.resource_info.process_name}  />
+                      <MoviesCard posterUrls={movie.share_info.cover.url3} movieTitle={movie.resource_info.process_name} id={movie.resource_info.enid}  />
                   ))}
                 </div>
     

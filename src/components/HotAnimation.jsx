@@ -29,7 +29,7 @@ export default function PopularAnimation({popularAnimation, source="filmapik"}) 
               <div className="relative h-auto min-h-[300px] md:min-h-[400px]">
                 <MoviesSlide
                   movies={popularAnimation}
-                  renderSlide={(movie, index) => <MoviesCard movieTitle={movie.resource_info.process_name} posterUrls={movie.share_info.cover.url3} index={index} source={source} />}
+                  renderSlide={(movie, index) => <MoviesCard id={movie.resource_info.enid} movieTitle={movie.resource_info.process_name} posterUrls={movie.share_info.cover.url3} />}
                 />
               </div>
             </div>

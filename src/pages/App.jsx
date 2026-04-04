@@ -93,15 +93,6 @@ function App() {
             <PopularMovies popularMovies={movies.hot}/>
             <TvShow Serial={movies.tvShow}/>            
             <PopularAnimation popularAnimation={movies.animation}/>           
-            {/* {movies.trending.data.length > 0 && (
-              <Trending trendingMovies={movies.trending.data} />
-            )}
-            {movies.latest.data.length > 0 && (
-              <Latest LatestMovies={movies.latest.data} />
-            )}
-            {movies.indo.length > 0 && (
-              <IndoMovies IndoMovies={movies.indo} />
-            )} */}
             <Faq />
           </div>
       </main>

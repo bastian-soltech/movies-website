@@ -27,9 +27,10 @@ export default function TvShow({Serial, source="filmapik"}) {
               <div className="absolute -top-20 left-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl"></div>
               
               <div className="relative h-auto min-h-[300px] md:min-h-[400px]">
+                {console.log('ser',Serial)}
                 <MoviesSlide
                   movies={Serial}
-                  renderSlide={(movie, index) => <MoviesCard movieTitle={movie.resource_info.process_name} posterUrls={movie.share_info.cover.url3} index={index} source={source} />}
+                  renderSlide={(movie, index) => <MoviesCard movieTitle={movie.resource_info.process_name} posterUrls={movie.share_info.cover.url3} id={movie.resource_info.enid} />}
                 />
               </div>
             </div>
