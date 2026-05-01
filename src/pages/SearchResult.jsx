@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo, Suspense, lazy } from "react";
 import { FiSearch, FiStar, FiCalendar, FiPlay } from "react-icons/fi";
 import { useSearchParams } from "react-router";
+import MoviesCard from "../components/MoviesComponent/MoviesCard";
 
 // Lazy load komponen besar (kurangi initial bundle)
 const NavBar = lazy(() => import("../components/navbar"));
@@ -131,7 +132,7 @@ export default function SearchResult() {
                 const poster =  share?.cover?.url3 || "https://via.placeholder.com/300x450?text=No+Poster";
 
                 return (
-                  <MoviesCard 
+                  <MoviesCard
                     key={index}
                     posterUrls={poster}
                     movieTitle={title}

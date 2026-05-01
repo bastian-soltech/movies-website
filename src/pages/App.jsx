@@ -92,7 +92,7 @@ function App() {
         <main className="relative">
           <Hero Movies={movies.hot} />
           
-          <div className="relative z-10 -mt-16 sm:-mt-24 space-y-24 pb-32">
+          <div className="relative z-10   space-y-24 pb-32">
             <PopularMovies popularMovies={movies.hot}/>
             <TvShow Serial={movies.tvShow}/>            
             <PopularAnimation popularAnimation={movies.animation}/>           

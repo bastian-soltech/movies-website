@@ -113,30 +113,33 @@ const Hero = React.memo(({ Movies = [], source = "filmapik" }) => {
 
           {/* Carousel Side */}
           <div className="lg:col-span-5 hidden lg:block perspective-1000">
-            <div className="relative w-full max-w-[500px] mx-auto">
-              <Swiper
-                effect="coverflow"
-                grabCursor
-                centeredSlides
-                slidesPerView="auto"
-                loop
-                autoplay={{
-                  delay: 6000,
-                  disableOnInteraction: false,
-                }}
-                coverflowEffect={{
-                  rotate: 5,
-                  stretch: 0,
-                  // depth: 150,
-                  modifier: 2,
-                  slideShadows: false,
-                }}
-                modules={[EffectCoverflow, Autoplay]}
-                onSlideChange={handleSlideChange}
-                className="hero-swiper !overflow-visible"
-              >
-                {slides}
-              </Swiper>
+             <div className="w-full max-w-2xl mx-auto lg:mx-0 overflow-hidden">
+              <div className="px-4 sm:px-0">
+                <Swiper
+                  effect="coverflow"
+                  grabCursor
+                  centeredSlides
+                  slidesPerView="auto"
+                  loop
+                  autoplay={{
+                    delay: 3500,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                  }}
+                  coverflowEffect={{
+                    rotate: 0,
+                    stretch: 0,
+                    depth: 300,
+                    modifier: 1,
+                    slideShadows: false,
+                  }}
+                  modules={[EffectCoverflow, Autoplay]}
+                  onSlideChange={handleSlideChange}
+                  className="hero-swiper"
+                >
+                  {slides}
+                </Swiper>
+              </div>
             </div>
           </div>
         </div>
