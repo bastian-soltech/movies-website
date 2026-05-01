@@ -15,9 +15,9 @@ export default function NavBar({source = 'filmapik'}) {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-surface border-b border-white/5 shadow-2xl transition-all duration-500">
+    <nav className="fixed top-0 inset-x-0 z-50 glass-surface border-b border-white/5 shadow-2xl transition-all duration-500">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 sm:h-20 gap-4">
+        <div className="flex justify-between items-center h-16 sm:h-20 gap-2 sm:gap-4">
           
           {/* Logo Section */}
           <a href="/" className="flex items-center space-x-2 sm:space-x-3 group shrink-0">
@@ -29,18 +29,18 @@ export default function NavBar({source = 'filmapik'}) {
             </span>
           </a>
 
-          {/* Center Search - Visible on Tablet and Desktop */}
+          {/* Center Search - Tablet/Desktop */}
           <form 
             onSubmit={handleSearch}
-            className={`hidden md:flex relative items-center transition-all duration-500 ease-out flex-1 max-w-md lg:max-w-lg ${
-              isSearchFocused ? 'ring-2 ring-blue-500/20 rounded-full' : ''
-            }`}
+            className="hidden md:flex relative items-center transition-all duration-500 ease-out flex-1 max-w-md lg:max-w-lg"
           >
             <div className="relative w-full group">
               <input
                 type="text"
                 placeholder="Search movies, series..."
-                className="w-full pl-11 pr-4 py-2.5 rounded-full bg-slate-900/40 border border-white/10 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500/40 focus:bg-slate-900/80 transition-all duration-300"
+                className={`w-full pl-11 pr-4 py-2.5 rounded-full bg-slate-900/40 border border-white/10 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:bg-slate-900/80 transition-all duration-300 ${
+                  isSearchFocused ? 'border-blue-500/50 ring-4 ring-blue-500/10' : 'focus:border-blue-500/30'
+                }`}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
@@ -50,9 +50,8 @@ export default function NavBar({source = 'filmapik'}) {
             </div>
           </form>
 
-          {/* Right Section: Nav Links + Toggle */}
+          {/* Right Section */}
           <div className="flex items-center gap-2 lg:gap-6">
-            {/* Desktop Navigation Links */}
             <div className="hidden lg:flex items-center space-x-1">
               {[
                 { label: 'Home', href: '/' },
@@ -63,28 +62,26 @@ export default function NavBar({source = 'filmapik'}) {
                 <a 
                   key={item.label}
                   href={item.href} 
-                  className="px-4 py-2 text-[12px] font-black uppercase tracking-[0.15em] text-slate-400 hover:text-white transition-all rounded-full hover:bg-white/5 active:scale-95"
+                  className="px-4 py-2 text-[11px] xl:text-[12px] font-black uppercase tracking-[0.15em] text-slate-400 hover:text-white transition-all rounded-full hover:bg-white/5 active:scale-95"
                 >
                   {item.label}
                 </a>
               ))}
             </div>
 
-            {/* Mobile Toggle Button */}
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden h-11 w-11 flex items-center justify-center text-slate-300 hover:text-white transition-all rounded-2xl bg-white/5 border border-white/10 active:scale-90"
+              className="lg:hidden h-10 w-10 sm:h-11 sm:w-11 flex items-center justify-center text-slate-300 hover:text-white transition-all rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 active:scale-90"
               aria-label="Toggle Menu"
             >
-              {isMobileMenuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+              {isMobileMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile menu - slide down animation handled by transition-all or libraries, here using standard classes */}
-        <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${isMobileMenuOpen ? 'max-h-[500px] opacity-100 pb-8' : 'max-h-0 opacity-0'}`}>
+        {/* Mobile menu content */}
+        <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${isMobileMenuOpen ? 'max-h-[600px] opacity-100 pb-8' : 'max-h-0 opacity-0'}`}>
           <div className="pt-2 space-y-6">
-            {/* Mobile Search - Only visible on very small devices where desktop search is hidden */}
             <form onSubmit={handleSearch} className="md:hidden">
               <div className="relative">
                 <input
@@ -98,7 +95,6 @@ export default function NavBar({source = 'filmapik'}) {
               </div>
             </form>
 
-            {/* Navigation Grid */}
             <div className="grid grid-cols-2 gap-3">
               {[
                 { label: 'Home', icon: FiHome, href: '/' },
