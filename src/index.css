@@ -1,22 +1,61 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+:root {
+  /* Cinematic Color Palette */
+  --color-bg-base: #020617; /* slate-950 */
+  --color-bg-surface: rgba(15, 23, 42, 0.6); /* slate-900 with alpha */
+  --color-primary: #3b82f6; /* blue-500 */
+  --color-accent: #06b6d4; /* cyan-500 */
+  --color-text-main: #f8fafc; /* slate-50 */
+  --color-text-muted: #94a3b8; /* slate-400 */
+  --color-border-subtle: rgba(59, 130, 246, 0.15);
+
+  /* Spacing System */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+
+  /* Refined Shadows */
+  --shadow-cinematic: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
 body {
-  @apply max-w-[100vw] overflow-x-hidden;
-  /* @apply max-h-[100vh] overflow-y-hidden; */
-
+  @apply bg-slate-950 text-slate-50 antialiased;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
 }
 
-/* Container utama untuk membatasi lebar konten */
+/* Glassmorphism Utility */
+.glass-surface {
+  @apply backdrop-blur-md bg-slate-900/60 border border-white/5;
+}
+
+/* Refined Typography */
+h1, h2, h3, h4 {
+  @apply tracking-tight font-bold;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-slate-950;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-800 rounded-full hover:bg-slate-700 transition-colors;
+}
+
 .main-container {
-  @apply w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8;
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }
 
-/* Atur Swiper/Slider agar tidak menyebabkan overflow */
+/* Swiper Overrides */
 .swiper-container {
-  @apply overflow-visible;
-}
-
-.swiper-slide {
-  @apply w-auto; /* atau atur width yang spesifik */
+  overflow: visible !important;
 }

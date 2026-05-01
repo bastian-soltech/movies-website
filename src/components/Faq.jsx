@@ -3,41 +3,41 @@ import { FiHelpCircle, FiChevronDown } from "react-icons/fi";
 export default function Faq() {
     const faqItems = [
         {
-            question: "Apakah layanan ini gratis?",
-            answer: "Ya, NontonYuk21 sepenuhnya gratis untuk digunakan. Kami tidak memungut biaya apapun untuk menonton film."
+            question: "Is this service free?",
+            answer: "Yes, NontonYuk21 is completely free to use. We do not charge any fees for streaming movies."
         },
         {
-            question: "Kenapa harus memilih NontonYuk21?",
-            answer: "NontonYuk21 menawarkan koleksi film terlengkap, kualitas streaming tinggi, antarmuka yang mudah digunakan, dan update film terbaru secara berkala."
+            question: "Why choose NontonYuk21?",
+            answer: "We offer an extensive collection of movies, high-quality streaming, a user-friendly interface, and regular updates with the latest releases."
         },
         {
-            question: "Apakah NontonYuk21 aman digunakan?",
-            answer: "Sangat aman! Kami menggunakan teknologi enkripsi terbaru dan tidak menyimpan data pribadi pengguna. Selalu pastikan Anda mengakses situs resmi kami."
+            question: "Is it safe to use?",
+            answer: "Absolutely. We use industry-standard encryption and do not store user personal data. Always ensure you are on our official site."
         },
         {
-            question: "Bagaimana cara mencoba layanan ini?",
-            answer: "Anda bisa langsung mulai menonton tanpa perlu registrasi. Cukup buka situs kami, pilih film yang ingin ditonton, dan nikmati!"
+            question: "How do I start watching?",
+            answer: "No registration required. Simply browse our collection, pick a movie, and start your cinematic journey instantly."
         }
     ];
 
     return (
-        <section className="py-20 px-4">
-            <div className="max-w-4xl mx-auto">
+        <section className="py-24 px-4 relative overflow-hidden">
+            {/* Background Accent */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+            <div className="max-w-3xl mx-auto relative z-10">
                 {/* Section Header */}
-                <div className="text-center mb-12 space-y-4">
-                    <div className="inline-flex items-center space-x-2 bg-blue-500/10 backdrop-blur-sm border border-blue-500/20 rounded-full px-4 py-2">
-                        <FiHelpCircle className="text-blue-400" />
-                        <span className="text-blue-300 text-sm font-medium">FAQ</span>
+                <div className="text-center mb-16 space-y-4">
+                    <div className="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-[0.3em] text-blue-500 mb-2">
+                        Common Questions
                     </div>
-                    
-                    <h2 className="text-4xl md:text-5xl font-bold">
-                        <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                            Frequently Asked Questions
-                        </span>
+
+                    <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white">
+                        FAQ
                     </h2>
-                    
-                    <p className="text-slate-400 text-lg">
-                        Temukan jawaban untuk pertanyaan yang sering ditanyakan
+
+                    <p className="text-slate-500 text-lg font-medium">
+                        Everything you need to know about NontonYuk21
                     </p>
                 </div>
 
@@ -45,19 +45,17 @@ export default function Faq() {
                 <div className="space-y-4">
                     {faqItems.map((item, index) => (
                         <div key={index} className="group">
-                            <div className="collapse collapse-arrow bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 hover:bg-slate-800/50 hover:border-blue-500/30 rounded-xl transition-all duration-300">
+                            <div className="collapse collapse-arrow glass-surface border-white/5 hover:border-white/10 rounded-2xl transition-all duration-300">
                                 <input type="radio" name="faq-accordion" defaultChecked={index === 0} />
-                                
-                                <div className="collapse-title font-semibold text-lg text-slate-100 flex items-center">
-                                    <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center mr-3 group-hover:bg-blue-500/30 transition-colors">
-                                        <span className="text-blue-400 text-sm font-bold">{index + 1}</span>
-                                    </div>
+
+                                <div className="collapse-title font-bold text-lg text-slate-100 py-5 px-6">
+                                    <span className="text-blue-500 mr-4 tabular-nums">0{index + 1}</span>
                                     {item.question}
                                 </div>
-                                
-                                <div className="collapse-content text-slate-300">
-                                    <div className="pt-2 pl-11">
-                                        <p className="leading-relaxed">{item.answer}</p>
+
+                                <div className="collapse-content px-6 pb-6">
+                                    <div className="pl-10 border-l border-blue-500/20">
+                                        <p className="text-slate-400 leading-relaxed font-medium">{item.answer}</p>
                                     </div>
                                 </div>
                             </div>
@@ -66,17 +64,17 @@ export default function Faq() {
                 </div>
 
                 {/* Contact Support */}
-                <div className="mt-12 text-center">
-                    <p className="text-slate-400 mb-4">
-                        Masih ada pertanyaan?
+                <div className="mt-16 text-center">
+                    <p className="text-slate-500 font-bold uppercase tracking-widest text-xs mb-6">
+                        Still have questions?
                     </p>
                     <a 
-                        href="https://www.tiktok.com/@tyan.dev?is_from_webapp=1&sender_device=pc"
+                        href="https://www.tiktok.com/@tyan.dev"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/50"
+                        className="inline-flex items-center gap-3 bg-white text-slate-950 font-black px-10 py-4 rounded-full transition-all duration-300 hover:bg-blue-500 hover:text-white hover:scale-105 active:scale-95 shadow-xl shadow-white/5 uppercase tracking-widest text-sm"
                     >
-                        <span>Hubungi Kami</span>
+                        Contact Support
                     </a>
                 </div>
             </div>

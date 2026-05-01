@@ -32,21 +32,17 @@ const Hero = React.memo(({ Movies = [], source = "filmapik" }) => {
   const slides = useMemo(
     () =>
       Movies.map((poster, index) => (
-        // 
-        <SwiperSlide key={index} className="hero-swiper-slide">
-          {/* {console.log(poster)} */}
-          <div className="relative group">
+        <SwiperSlide key={index} className="!w-[220px] !h-[330px] sm:!w-[280px] sm:!h-[420px]">
+          <div className="relative group cursor-pointer h-full w-full">
             <img
-              src={poster.share_info.cover.url3}
-              alt={`Poster ${index + 1}`}
-              className="rounded-2xl object-cover h-full w-full shadow-2xl transition-all duration-500 group-hover:shadow-blue-500/50"
+              src={poster.share_info?.cover?.url3 || poster.share_info?.thumbs?.url3}
+              alt={poster.resource_info?.process_name}
+              className="rounded-2xl object-cover h-full w-full shadow-2xl transition-all duration-500 group-hover:scale-[1.02]"
               loading="lazy"
-              decoding="async"
             />
-            {/* Border Glow */}
-            <div className="absolute inset-0 rounded-2xl border-2 border-blue-500/0 group-hover:border-blue-500/50 transition-all duration-500"></div>
-            {/* Hover Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-blue-600/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
+            <div className="absolute inset-0 rounded-2xl ring-1 ring-white/10 group-hover:ring-blue-500/40 transition-all duration-500"></div>
+            {/* Subtle Reflection Effect */}
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-4/5 h-8 bg-blue-500/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
           </div>
         </SwiperSlide>
       )),
@@ -54,153 +50,100 @@ const Hero = React.memo(({ Movies = [], source = "filmapik" }) => {
   );
 
   return (
-    <div className="relative min-h-screen overflow-hidden pt-20 max-w-[100vw]">
-      {/*  Background — gunakan memoized activeMovie agar tidak render ulang */}
-      <div className="absolute inset-0 top-0">
-        {/* {console.log('activeMovie ',activeMovie)} */}
+    <div className="relative min-h-[90vh] lg:min-h-screen overflow-hidden pt-16 flex items-center bg-slate-950">
+      {/* Cinematic Background */}
+      <div className="absolute inset-0 z-0">
         <div
-          className="absolute inset-0 bg-cover bg-center transition-all duration-1000 will-change-transform"
+          className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-out scale-105 blur-[2px]"
           style={{
-            backgroundImage: `url(${activeMovie.share_info.thumbs.url3})`,
-            filter: "blur(2px)",
-            // transform: "scale(1.2)",
+            backgroundImage: `url(${activeMovie.share_info?.thumbs?.url3 || activeMovie.share_info?.cover?.url3})`,
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/50 to-slate-950"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-transparent to-slate-950"></div>
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: "1s" }}
-        ></div>
+        <div className="absolute inset-0 bg-slate-950/80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-transparent to-slate-950" />
       </div>
 
-      <div className="relative z-10 min-h-screen flex items-center overflow-hidden">
-        <div className="container mx-auto px-4 lg:px-8 py-20 max-w-full overflow-hidden">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-         
-            <div className="text-white space-y-8 text-center lg:text-left">
-              {/* <div className="inline-flex items-center space-x-2 bg-blue-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full px-4 py-2">
-                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                <span className="text-blue-300 text-sm font-medium">Featured Movie</span>
-              </div> */}
-
-              <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-                <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
-                  {activeMovie.resource_info.process_name}
-                </span>
+      <div className="container mx-auto px-4 lg:px-8 relative z-10 w-full">
+        <div className="grid lg:grid-cols-12 gap-12 items-center">
+          
+          {/* Movie Content */}
+          <div className="lg:col-span-7 space-y-8 animate-in fade-in slide-in-from-left-8 duration-1000">
+            <div className="space-y-5">
+              <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-blue-500">
+                <span className="h-px w-10 bg-blue-500"></span>
+                Top Recommendation
+              </div>
+              
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[0.95] text-white uppercase break-words drop-shadow-2xl">
+                {activeMovie.resource_info?.process_name}
               </h1>
 
-              {activeMovie.rating && (
-                <div className="flex items-center justify-center lg:justify-start space-x-4">
-                  <div className="flex items-center space-x-2 bg-slate-800/50 backdrop-blur-sm rounded-lg px-4 py-2">
-                    <FiStar className="text-yellow-400" />
-                    <span className="text-white font-semibold">{activeMovie.rating}</span>
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm text-slate-300 font-bold uppercase tracking-widest">
+                {activeMovie.rating > 0 && (
+                  <div className="flex items-center gap-2 text-white bg-blue-600/20 px-3 py-1.5 rounded-lg backdrop-blur-md border border-blue-500/20">
+                    <FiStar className="text-yellow-400 fill-yellow-400" size={14} />
+                    {activeMovie.rating}
                   </div>
-                  <div className="h-6 w-px bg-slate-600"></div>
-                  <span className="text-slate-300">2024 </span>
-                </div>
-              )}
-
-              {activeMovie.description && (
-                <p className="text-slate-300 text-lg leading-relaxed max-w-2xl">
-                  {activeMovie}
-                </p>
-              )}
-
-              {/* 🔗 Tombol */}
-              <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                <a
-                  href={
-                    source === "filmapik"
-                      ? `/movies/streaming/${activeMovie.resource_info.enid}/movie`
-                      : `/ny21-indo/movies/streaming/${activeMovie.moviesTitle}`
-                  }
-                  className="group relative inline-flex items-center space-x-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/50"
-                >
-                  <div className="absolute inset-0 bg-white/20 rounded-full blur opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <FiPlay className="relative" />
-                  <span className="relative">Watch Now</span>
-                </a>
-
-                {/*  */}
+                )}
+                <span className="bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">2024</span>
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                <span className="text-blue-400">Action & Drama</span>
               </div>
             </div>
 
-            {/* 🎞️ Swiper */}
-            <div className="w-full max-w-2xl mx-auto lg:mx-0 overflow-hidden">
-              <div className="px-4 sm:px-0">
-                <Swiper
-                  effect="coverflow"
-                  grabCursor
-                  centeredSlides
-                  slidesPerView="auto"
-                  loop
-                  autoplay={{
-                    delay: 3500,
-                    disableOnInteraction: false,
-                    pauseOnMouseEnter: true,
-                  }}
-                  coverflowEffect={{
-                    rotate: 0,
-                    stretch: 0,
-                    depth: 300,
-                    modifier: 1,
-                    slideShadows: false,
-                  }}
-                  modules={[EffectCoverflow, Autoplay]}
-                  onSlideChange={handleSlideChange}
-                  className="hero-swiper"
-                >
-                  {slides}
-                </Swiper>
-              </div>
+            <p className="text-slate-400 text-base sm:text-lg leading-relaxed max-w-xl line-clamp-3 font-medium">
+              {activeMovie.resource_info?.description || "Experience the most anticipated cinematic masterpiece of the year, featuring breathtaking visuals and an unforgettable story."}
+            </p>
+
+            <div className="flex flex-wrap gap-4 pt-4">
+              <a
+                href={`/movies/streaming/${activeMovie.resource_info?.enid}/movie`}
+                className="group relative flex items-center gap-3 bg-white text-slate-950 font-black px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-blue-600 hover:text-white hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(0,0,0,0.3)] uppercase tracking-widest text-sm"
+              >
+                <FiPlay className="fill-current" size={18} />
+                <span>Watch Now</span>
+              </a>
+              <button className="flex items-center gap-3 bg-white/5 hover:bg-white/10 text-white font-black px-10 py-5 rounded-2xl transition-all duration-300 border border-white/10 backdrop-blur-md uppercase tracking-widest text-sm">
+                <FiInfo size={18} />
+                <span>Details</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Carousel Side */}
+          <div className="lg:col-span-5 hidden lg:block perspective-1000">
+            <div className="relative w-full max-w-[500px] mx-auto">
+              <Swiper
+                effect="coverflow"
+                grabCursor
+                centeredSlides
+                slidesPerView="auto"
+                loop
+                autoplay={{
+                  delay: 6000,
+                  disableOnInteraction: false,
+                }}
+                coverflowEffect={{
+                  rotate: 5,
+                  stretch: 0,
+                  // depth: 150,
+                  modifier: 2,
+                  slideShadows: false,
+                }}
+                modules={[EffectCoverflow, Autoplay]}
+                onSlideChange={handleSlideChange}
+                className="hero-swiper !overflow-visible"
+              >
+                {slides}
+              </Swiper>
             </div>
           </div>
         </div>
       </div>
-
-      {/* 🎨 Custom Styles */}
-      <style jsx>{`
-        .hero-swiper {
-          width: 100%;
-          padding-top: 50px;
-          padding-bottom: 50px;
-          overflow: visible;
-        }
-        .hero-swiper-slide {
-          background-position: center;
-          background-size: cover;
-          width: 220px;
-          height: 330px;
-        }
-        @media (min-width: 640px) {
-          .hero-swiper-slide {
-            width: 280px;
-            height: 420px;
-          }
-        }
-        .hero-swiper-slide img {
-          display: block;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-        @keyframes gradient {
-          0%, 100% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-        }
-        .animate-gradient {
-          background-size: 200% auto;
-          animation: gradient 3s ease infinite;
-        }
-      `}</style>
     </div>
   );
 });
+
 
 export default Hero;

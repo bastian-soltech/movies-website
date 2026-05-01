@@ -2,62 +2,42 @@ import { memo, useMemo } from "react";
 import { FiPlay, FiStar } from "react-icons/fi";
 
 function MoviesCard({posterUrls,movieTitle,rating,id}) {
-  // Gunakan useMemo untuk menghindari perhitungan ulang href tiap render
-  // const href = useMemo(() => {
-  //   const title = encodeURIComponent(movie.moviesTitle || `movie-${index + 1}`);
-  //   return source === "filmapik"
-  //     ? `/movies/streaming/${title}/movie`
-  //     : `/ny21-indo/movies/streaming/${title}`;
-  // }, [movie.moviesTitle, index, source]);
-
-  // Hindari re-render jika prop tidak berubah
   return (
-    <a href={`/movies/streaming/${id}/movie`} className="group relative block will-change-transform">
-      <div className="relative h-0 pb-[150%] overflow-hidden rounded-xl shadow-2xl transition-all duration-500 hover:shadow-blue-500/20">
-        {/* Lazy Loaded Image */}
+    <a href={`/movies/streaming/${id}/movie`} className="group relative block transition-all duration-300 transform active:scale-95">
+      <div className="relative aspect-[2/3] overflow-hidden rounded-2xl bg-slate-900 shadow-lg ring-1 ring-white/5 transition-all duration-500 group-hover:shadow-blue-500/20 group-hover:ring-blue-500/30">
+        {/* Poster Image */}
         <img
           src={posterUrls}
-          alt={movieTitle || `Movie ${index + 1}`}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          alt={movieTitle}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           loading="lazy"
-          decoding="async"
         />
 
-        {/* Overlay & Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-        <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-        {/* Play Button */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 will-change-transform">
-          <div className="relative">
-            <div className="absolute inset-0 bg-blue-500 blur-2xl opacity-60 animate-pulse" />
-            <div className="relative bg-blue-500/90 backdrop-blur-sm rounded-full p-4 transform scale-0 group-hover:scale-100 transition-transform duration-300">
-              <FiPlay className="text-white text-3xl" />
-            </div>
+        {/* Minimal Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-90" />
+        
+        {/* Play Icon - Refined */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500 text-white shadow-xl shadow-blue-500/40 transform scale-75 group-hover:scale-100 transition-transform duration-300">
+            <FiPlay className="fill-current ml-1" size={20} />
           </div>
         </div>
 
         {/* Info Section */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-          <h3
-            className="text-white text-sm md:text-base font-semibold line-clamp-2 mb-2 drop-shadow-lg"
-            title={movieTitle}
-          >
+        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+          <h3 className="text-sm font-semibold text-white line-clamp-2 mb-1.5 group-hover:text-blue-400 transition-colors duration-300">
             {movieTitle}
           </h3>
-
-          {rating && (
-            <div className="flex items-center space-x-1 bg-slate-900/80 backdrop-blur-sm rounded-full px-3 py-1 w-fit">
-              <FiStar className="text-yellow-400 text-xs" />
-              <span className="text-yellow-400 text-xs font-medium">
-                {rating}
-              </span>
-            </div>
-          )}
+          
+          <div className="flex items-center gap-2">
+            {rating > 0 && (
+              <div className="flex items-center gap-1 rounded-md bg-white/10 px-1.5 py-0.5 backdrop-blur-md ring-1 ring-white/10">
+                <FiStar className="text-yellow-400 fill-yellow-400" size={10} />
+                <span className="text-[10px] font-bold text-white">{rating}</span>
+              </div>
+            )}
+          </div>
         </div>
-
-        {/* Border Glow */}
-        <div className="absolute inset-0 rounded-xl border border-blue-500/0 group-hover:border-blue-500/30 transition-all duration-500" />
       </div>
     </a>
   );

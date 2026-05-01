@@ -74,95 +74,91 @@ export default function PopularMoviesPage() {
       };
     
       return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
-          <NavBar/>
-          {/* {console.log(Popular)} */}
-          <div className="container mx-auto px-4 lg:px-8 pt-28 pb-16">
-            {/* Page Header */}
-            <div className="mb-12">
-              <div className="inline-flex items-center space-x-2 bg-cyan-500/10 backdrop-blur-sm border border-cyan-500/20 rounded-full px-4 py-2 mb-4">
-                <FiClock className="text-cyan-400" />
-                <span className="text-cyan-300 text-sm font-medium">Fresh Releases</span>
-              </div>
-              
-              <h1 className="text-5xl md:text-6xl font-bold mb-4">
-                <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                  Popular Movies
-                </span>
-              </h1>
-              
-              <p className="text-slate-400 text-lg">
-                Brand new releases just added to our collection
-              </p>
-            </div>
-    
-            {/* Content */}
-            {loading ? (
-              <div className="flex justify-center items-center h-96">
-                <div className="text-center space-y-4">
-                  <div className="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-                  <p className="text-slate-400">Loading popular movies...</p>
-                </div>
-              </div>
-            ) : error ? (
-              <div className="flex justify-center items-center h-96">
-                <div className="text-center p-8 bg-red-500/10 border border-red-500/30 rounded-2xl max-w-md">
-                  <p className="text-red-400 text-lg">{error}</p>
-                </div>
-              </div>
-            ) : Popular.length> 0 ? (
-              <>
-                {/* Movies Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-12">
-                  {console.log('popular',Popular)}
-                  {Popular.map((movie) => (
-                    // console.log('movie',movie)
-                      <MoviesCard posterUrls={movie.share_info.cover.url3} movieTitle={movie.resource_info.process_name} id={movie.resource_info.enid}  />
-                  ))}
-                </div>
-    
-                {/* Pagination */}
-                <div className="flex justify-center items-center gap-3 flex-wrap">
-                  <button
-                    onClick={prevPageBlock}
-                    disabled={pageBlock === 0}
-                    className={`px-6 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${
-                      pageBlock === 0
-                        ? "bg-slate-800/30 text-slate-600 cursor-not-allowed"
-                        : "bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 border border-slate-700 hover:border-cyan-500/50"
-                    }`}
-                  >
-                    ← Previous
-                  </button>
-    
-                  {renderPageNumbers()}
-    
-                  <button
-                    onClick={nextPageBlock}
-                    disabled={!hasNextPage}
-                    className={`px-6 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${
-                      !hasNextPage
-                        ? "bg-slate-800/30 text-slate-600 cursor-not-allowed"
-                        : "bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 border border-slate-700 hover:border-cyan-500/50"
-                    }`}
-                  >
-                    Next →
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div className="flex justify-center items-center h-96">
-                <div className="text-center space-y-4">
-                  <div className="text-6xl">🎬</div>
-                  <p className="text-slate-400 text-lg">No movies found.</p>
-                </div>
-              </div>
-            )}
+    <div className="min-h-screen bg-slate-950">
+      <NavBar/>
+      
+      <div className="container mx-auto px-4 lg:px-8 pt-32 pb-24">
+        {/* Page Header */}
+        <div className="mb-16 space-y-4">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold uppercase tracking-[0.3em] text-blue-500">
+            Global Trends
           </div>
-    
-          {/* Decorative Background Elements */}
-          <div className="fixed top-1/4 left-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="fixed bottom-1/4 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
+          
+          <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white leading-none">
+            Popular <span className="text-blue-500">Movies</span>
+          </h1>
+          
+          <p className="text-slate-500 text-lg font-medium">
+            The most watched cinematic experiences worldwide
+          </p>
         </div>
-      );
+
+        {/* Content */}
+        {loading ? (
+          <div className="flex justify-center items-center h-96">
+            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : error ? (
+          <div className="flex justify-center items-center h-96">
+            <div className="text-center p-10 glass-surface border-red-500/20 rounded-3xl max-w-md">
+              <p className="text-red-400 font-bold uppercase tracking-widest text-sm">{error}</p>
+            </div>
+          </div>
+        ) : Popular.length > 0 ? (
+          <>
+            {/* Movies Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 sm:gap-8 mb-16">
+              {Popular.map((movie, index) => (
+                <MoviesCard 
+                  key={movie.resource_info.enid || index}
+                  posterUrls={movie.share_info.cover.url3} 
+                  movieTitle={movie.resource_info.process_name} 
+                  id={movie.resource_info.enid}
+                  rating={movie.rating}
+                />
+              ))}
+            </div>
+
+            {/* Pagination */}
+            <div className="flex justify-center items-center gap-2 flex-wrap pt-8 border-t border-white/5">
+              <button
+                onClick={prevPageBlock}
+                disabled={pageBlock === 0}
+                className={`px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                  pageBlock === 0
+                    ? "bg-white/5 text-slate-700 cursor-not-allowed"
+                    : "bg-white/5 text-slate-400 hover:bg-blue-500 hover:text-white border border-white/5"
+                }`}
+              >
+                Prev
+              </button>
+
+              <div className="flex gap-2">
+                {renderPageNumbers()}
+              </div>
+
+              <button
+                onClick={nextPageBlock}
+                disabled={!hasNextPage}
+                className={`px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                  !hasNextPage
+                    ? "bg-white/5 text-slate-700 cursor-not-allowed"
+                    : "bg-white/5 text-slate-400 hover:bg-blue-500 hover:text-white border border-white/5"
+                }`}
+              >
+                Next
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="flex justify-center items-center h-96">
+            <p className="text-slate-500 font-bold uppercase tracking-widest text-sm">No movies found</p>
+          </div>
+        )}
+      </div>
+
+      {/* Background Decor */}
+      <div className="fixed top-1/4 -left-20 w-96 h-96 bg-blue-500/5 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+    </div>
+  );
 }

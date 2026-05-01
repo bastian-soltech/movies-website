@@ -123,94 +123,135 @@ const StreamingMovies = () => {
   return (
     <div className="min-h-screen bg-slate-950">
       <NavBar />
-      <div className="pt-20 bg-gradient-to-b from-slate-950 to-slate-900">
-        <div className="container mx-auto px-4 lg:px-8 py-8">
-          <div className="w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+      
+      {/* Cinematic Player Section */}
+      <div className="pt-20 bg-slate-900/20">
+        <div className="container mx-auto px-4 lg:px-8 py-6 sm:py-10">
+          <div className="w-full aspect-video bg-black rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative group">
             <video
               ref={videoRef}
               controls
               autoPlay
               className="w-full h-full object-contain"
             />
+            {/* Subtle glow behind the player */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 py-12 space-y-10">
-        {series?.list?.length > 0 && (
-          <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700">
-            <h2 className="text-xl font-bold text-slate-100 mb-4 flex items-center gap-2">
-              <FiServer className="text-blue-500" /> Pilih Episode
-            </h2>
-            <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
-              {series.list.map((ep, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleEpisodeSelect(series.root_info, ep.fs_id, index)}
-                  className={`py-2 rounded-lg font-medium transition-all ${
-                    activeEpisode === index
-                      ? 'bg-blue-600 text-white ring-2 ring-blue-400'
-                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-                  }`}
-                >
-                  {index + 1}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-6 space-y-6">
-          <h1 className="text-3xl font-bold text-slate-100">
-            {movieInfo?.personalized_name || movieInfo?.process_name || 'Untitled'}
-          </h1>
+      <div className="container mx-auto px-4 lg:px-8 py-12">
+        <div className="grid lg:grid-cols-12 gap-12 items-start">
           
-          <div className="flex flex-wrap gap-4 text-sm">
-            {tagInfo?.year && (
-              <div className="flex items-center gap-2 text-blue-400 bg-blue-400/10 px-3 py-1 rounded-full">
-                <FaCalendarAlt /> {tagInfo.year}
-              </div>
-            )}
-            {shareInfo?.duration && (
-              <div className="flex items-center gap-2 text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full">
-                <FaClock /> {formatDuration(shareInfo.duration)}
-              </div>
-            )}
-            {tagInfo?.type && (
-              <div className="flex items-center gap-2 text-purple-400 bg-purple-400/10 px-3 py-1 rounded-full">
-                {tagInfo.type}
-              </div>
-            )}
-            {movieInfo?.country && (
-              <div className="flex items-center gap-2 text-slate-400 bg-slate-400/10 px-3 py-1 rounded-full">
-                {movieInfo.country}
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-slate-200">Synopsis</h2>
-            <p className="text-slate-300 leading-relaxed max-w-4xl">
-              {movieInfo?.description || 'No description available.'}
-            </p>
-          </div>
-
-          {(tagInfo?.actor || tagInfo?.director) && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-slate-700 text-sm">
-              {tagInfo.director && (
-                <div>
-                  <span className="text-slate-500 block mb-1">Director</span>
-                  <span className="text-slate-200">{tagInfo.director}</span>
+          {/* Main Info */}
+          <div className="lg:col-span-8 space-y-12">
+            
+            {/* Episode Selector - Enhanced */}
+            {series?.list?.length > 0 && (
+              <div className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <span className="h-5 w-1 bg-blue-500 rounded-full"></span>
+                  <h2 className="text-xl font-black uppercase tracking-tight text-white">
+                    Select Episode
+                  </h2>
                 </div>
-              )}
-              {tagInfo.actor && (
-                <div>
-                  <span className="text-slate-500 block mb-1">Cast</span>
-                  <span className="text-slate-200">{tagInfo.actor}</span>
+                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-10 gap-3">
+                  {series.list.map((ep, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleEpisodeSelect(series.root_info, ep.fs_id, index)}
+                      className={`h-12 rounded-xl font-bold transition-all duration-300 ${
+                        activeEpisode === index
+                          ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20 ring-2 ring-blue-400'
+                          : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white border border-white/5'
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Metadata Card */}
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <div className="space-y-4">
+                <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter text-white leading-tight">
+                  {movieInfo?.personalized_name || movieInfo?.process_name || 'Untitled'}
+                </h1>
+                
+                <div className="flex flex-wrap gap-4 items-center text-xs font-bold uppercase tracking-widest">
+                  {tagInfo?.year && (
+                    <div className="flex items-center gap-2 text-blue-400 bg-blue-400/10 px-3 py-1.5 rounded-lg border border-blue-400/20">
+                      <FaCalendarAlt /> {tagInfo.year}
+                    </div>
+                  )}
+                  {shareInfo?.duration && (
+                    <div className="flex items-center gap-2 text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-lg border border-cyan-400/20">
+                      <FaClock /> {formatDuration(shareInfo.duration)}
+                    </div>
+                  )}
+                  {tagInfo?.type && (
+                    <div className="text-slate-300 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+                      {tagInfo.type}
+                    </div>
+                  )}
+                  {movieInfo?.country && (
+                    <div className="text-slate-500 border-l border-white/10 pl-4">
+                      {movieInfo.country}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-sm font-black uppercase tracking-widest text-blue-500">Synopsis</h3>
+                <p className="text-slate-400 text-lg leading-relaxed max-w-4xl font-medium">
+                  {movieInfo?.description || 'No description available.'}
+                </p>
+              </div>
+
+              {(tagInfo?.actor || tagInfo?.director) && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-8 border-t border-white/5">
+                  {tagInfo.director && (
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600 block">Director</span>
+                      <span className="text-white font-bold">{tagInfo.director}</span>
+                    </div>
+                  )}
+                  {tagInfo.actor && (
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600 block">Lead Cast</span>
+                      <span className="text-white font-bold leading-relaxed">{tagInfo.actor}</span>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
-          )}
+          </div>
+
+          {/* Sidebar Area (Potential for related content) */}
+          <div className="lg:col-span-4 space-y-8">
+             <div className="glass-surface p-8 rounded-3xl space-y-6">
+                <div className="space-y-2">
+                  <h4 className="text-sm font-black uppercase tracking-widest text-white">Streaming Quality</h4>
+                  <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">Ultra High Definition</p>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-slate-400">
+                    <span>Server Status</span>
+                    <span className="text-green-500 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                      Operational
+                    </span>
+                  </div>
+                  <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full w-[95%] bg-blue-500"></div>
+                  </div>
+                </div>
+             </div>
+          </div>
+
         </div>
       </div>
     </div>

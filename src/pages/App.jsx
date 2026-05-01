@@ -80,16 +80,19 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-x-hidden">
+    <div className="min-h-screen bg-slate-950 selection:bg-blue-500/30 selection:text-blue-200">
       <Suspense
         fallback={
-          <div className="text-slate-400 text-center mt-20">Loading...</div>
+          <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
         }
       >
         <NavBar source="filmapik" />
-        <main>
+        <main className="relative">
           <Hero Movies={movies.hot} />
-          <div className="space-y-16 pb-20 mt-10">
+          
+          <div className="relative z-10 -mt-16 sm:-mt-24 space-y-24 pb-32">
             <PopularMovies popularMovies={movies.hot}/>
             <TvShow Serial={movies.tvShow}/>            
             <PopularAnimation popularAnimation={movies.animation}/>           
