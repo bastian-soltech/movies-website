@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
 :root {
   /* Cinematic Color Palette */
   --color-bg-base: #020617; /* slate-950 */
