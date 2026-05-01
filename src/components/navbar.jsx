@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FiSearch, FiMenu, FiX, FiHome, FiTrendingUp, FiClock, FiFilm } from 'react-icons/fi';
+import { FiSearch, FiMenu, FiX, FiHome, FiTrendingUp, FiClock, FiFilm, FiStar } from 'react-icons/fi';
 
 export default function NavBar({source = 'filmapik'}) {
   const [searchQuery, setSearchQuery] = useState('');
