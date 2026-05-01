@@ -15,108 +15,112 @@ export default function NavBar({source = 'filmapik'}) {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-surface border-b border-white/5 shadow-2xl transition-all duration-300">
+    <nav className="fixed top-0 left-0 right-0 z-50 glass-surface border-b border-white/5 shadow-2xl transition-all duration-500">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 sm:h-20">
-          {/* Logo */}
+        <div className="flex justify-between items-center h-16 sm:h-20 gap-4">
+          
+          {/* Logo Section */}
           <a href="/" className="flex items-center space-x-2 sm:space-x-3 group shrink-0">
             <div className="relative">
               <FiFilm className="text-2xl sm:text-3xl text-blue-500 group-hover:scale-110 transition-transform duration-300" />
             </div>
-            <span className="text-lg font-black tracking-tighter sm:text-2xl text-white">
+            <span className="text-lg sm:text-xl xl:text-2xl font-black tracking-tighter text-white">
               NontonYuk<span className="text-blue-500">21</span>
             </span>
           </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
-            <a href="/" className="px-4 py-2 text-[13px] font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors rounded-full hover:bg-white/5">
-              Home
-            </a>
-            <a href="/trending" className="px-4 py-2 text-[13px] font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors rounded-full hover:bg-white/5">
-              Trending
-            </a>
-            <a href="/latest" className="px-4 py-2 text-[13px] font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors rounded-full hover:bg-white/5">
-              Terbaru
-            </a>
-            <a href="/popular" className="px-4 py-2 text-[13px] font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors rounded-full hover:bg-white/5">
-              Popular
-            </a>
-          </div>
+          {/* Center Search - Visible on Tablet and Desktop */}
+          <form 
+            onSubmit={handleSearch}
+            className={`hidden md:flex relative items-center transition-all duration-500 ease-out flex-1 max-w-md lg:max-w-lg ${
+              isSearchFocused ? 'ring-2 ring-blue-500/20 rounded-full' : ''
+            }`}
+          >
+            <div className="relative w-full group">
+              <input
+                type="text"
+                placeholder="Search movies, series..."
+                className="w-full pl-11 pr-4 py-2.5 rounded-full bg-slate-900/40 border border-white/10 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500/40 focus:bg-slate-900/80 transition-all duration-300"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => setIsSearchFocused(false)}
+              />
+              <FiSearch className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300 ${isSearchFocused ? 'text-blue-500' : 'text-slate-500'}`} size={16} />
+            </div>
+          </form>
 
-          {/* Search and Mobile Toggle Container */}
-          <div className="flex items-center gap-2 sm:gap-4">
-            {/* Desktop Search */}
-            <form 
-              onSubmit={handleSearch}
-              className={`hidden md:flex relative items-center transition-all duration-500 ease-out ${
-                isSearchFocused ? 'w-64 lg:w-80' : 'w-48 lg:w-64'
-              }`}
-            >
-              <div className="relative w-full group">
-                <input
-                  type="text"
-                  placeholder="Search titles..."
-                  className="w-full pl-10 pr-4 py-2 rounded-full bg-slate-900/50 border border-white/10 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500/50 focus:bg-slate-900/80 transition-all duration-300"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onFocus={() => setIsSearchFocused(true)}
-                  onBlur={() => setIsSearchFocused(false)}
-                />
-                <FiSearch className={`absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors duration-300 ${isSearchFocused ? 'text-blue-500' : 'text-slate-500'}`} size={14} />
-              </div>
-            </form>
+          {/* Right Section: Nav Links + Toggle */}
+          <div className="flex items-center gap-2 lg:gap-6">
+            {/* Desktop Navigation Links */}
+            <div className="hidden lg:flex items-center space-x-1">
+              {[
+                { label: 'Home', href: '/' },
+                { label: 'Trending', href: '/trending' },
+                { label: 'Latest', href: '/latest' },
+                { label: 'Popular', href: '/popular' }
+              ].map((item) => (
+                <a 
+                  key={item.label}
+                  href={item.href} 
+                  className="px-4 py-2 text-[12px] font-black uppercase tracking-[0.15em] text-slate-400 hover:text-white transition-all rounded-full hover:bg-white/5 active:scale-95"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
 
-            {/* Mobile Toggle */}
+            {/* Mobile Toggle Button */}
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden h-10 w-10 flex items-center justify-center text-slate-300 hover:text-white transition-colors rounded-xl bg-white/5 border border-white/10"
+              className="lg:hidden h-11 w-11 flex items-center justify-center text-slate-300 hover:text-white transition-all rounded-2xl bg-white/5 border border-white/10 active:scale-90"
               aria-label="Toggle Menu"
             >
-              {isMobileMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+              {isMobileMenuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden pb-8 pt-2 animate-in fade-in slide-in-from-top-4 duration-300">
-            <form onSubmit={handleSearch} className="mb-8 md:hidden">
+        {/* Mobile menu - slide down animation handled by transition-all or libraries, here using standard classes */}
+        <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${isMobileMenuOpen ? 'max-h-[500px] opacity-100 pb-8' : 'max-h-0 opacity-0'}`}>
+          <div className="pt-2 space-y-6">
+            {/* Mobile Search - Only visible on very small devices where desktop search is hidden */}
+            <form onSubmit={handleSearch} className="md:hidden">
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search..."
-                  className="w-full pl-11 pr-4 py-4 rounded-2xl bg-slate-900/80 border border-white/10 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500/50"
+                  placeholder="Search titles..."
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-900/60 border border-white/10 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500/50"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
               </div>
             </form>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+            {/* Navigation Grid */}
+            <div className="grid grid-cols-2 gap-3">
               {[
                 { label: 'Home', icon: FiHome, href: '/' },
                 { label: 'Trending', icon: FiTrendingUp, href: '/trending' },
-                { label: 'Terbaru', icon: FiClock, href: '/latest' },
+                { label: 'Latest', icon: FiClock, href: '/latest' },
                 { label: 'Popular', icon: FiStar, href: '/popular' }
               ].map((item) => (
                 <a 
                   key={item.label}
                   href={item.href} 
-                  className="flex items-center justify-between px-5 py-4 text-slate-300 hover:text-white hover:bg-blue-600 rounded-2xl transition-all border border-white/5 group"
+                  className="flex flex-col items-center justify-center gap-3 p-5 text-slate-300 hover:text-white hover:bg-blue-600 rounded-3xl transition-all border border-white/5 group active:scale-95 bg-white/5"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <div className="flex items-center space-x-4">
-                    <item.icon size={20} className="text-blue-500 group-hover:text-white transition-colors" /> 
-                    <span className="font-bold uppercase tracking-widest text-xs">{item.label}</span>
-                  </div>
-                  <FiX size={14} className="opacity-0 group-hover:opacity-100 transition-opacity rotate-45" />
+                  <item.icon size={24} className="text-blue-500 group-hover:text-white transition-colors" /> 
+                  <span className="font-black uppercase tracking-widest text-[10px]">{item.label}</span>
                 </a>
               ))}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </nav>
+
   );
 }
