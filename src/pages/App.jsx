@@ -91,14 +91,14 @@ function App() {
         <NavBar source="filmapik" />
         <main className="relative">
           <Hero Movies={movies.hot} />
-          
-          <div className="relative z-10   space-y-24 pb-32">
+
+          <div className="relative z-10  space-y-16 sm:space-y-24 pb-20 sm:pb-32">
             <PopularMovies popularMovies={movies.hot}/>
             <TvShow Serial={movies.tvShow}/>            
             <PopularAnimation popularAnimation={movies.animation}/>           
             <Faq />
           </div>
-      </main>
+        </main>
         <Footer />
       </Suspense>
     </div>

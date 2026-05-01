@@ -24,16 +24,16 @@ function MoviesCard({posterUrls,movieTitle,rating,id}) {
         </div>
 
         {/* Info Section */}
-        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
-          <h3 className="text-sm font-semibold text-white line-clamp-2 mb-1.5 group-hover:text-blue-400 transition-colors duration-300">
+        <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-4">
+          <h3 className="text-[10px] sm:text-sm font-bold text-white line-clamp-2 mb-1 group-hover:text-blue-400 transition-colors duration-300 tracking-tight leading-tight sm:leading-snug">
             {movieTitle}
           </h3>
           
           <div className="flex items-center gap-2">
             {rating > 0 && (
-              <div className="flex items-center gap-1 rounded-md bg-white/10 px-1.5 py-0.5 backdrop-blur-md ring-1 ring-white/10">
-                <FiStar className="text-yellow-400 fill-yellow-400" size={10} />
-                <span className="text-[10px] font-bold text-white">{rating}</span>
+              <div className="flex items-center gap-1 rounded-md bg-white/10 px-1 py-0.5 backdrop-blur-md ring-1 ring-white/10">
+                <FiStar className="text-yellow-400 fill-yellow-400" size={8} />
+                <span className="text-[8px] sm:text-[10px] font-black text-white">{rating}</span>
               </div>
             )}
           </div>

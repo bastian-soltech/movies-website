@@ -125,42 +125,40 @@ const StreamingMovies = () => {
       <NavBar />
       
       {/* Cinematic Player Section */}
-      <div className="pt-20 bg-slate-900/20">
-        <div className="container mx-auto px-4 lg:px-8 py-6 sm:py-10">
-          <div className="w-full aspect-video bg-black rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative group">
+      <div className="pt-16 sm:pt-20 bg-slate-900/20">
+        <div className="container mx-auto px-0 sm:px-4 lg:px-8 py-0 sm:py-10">
+          <div className="w-full aspect-video bg-black sm:rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative group">
             <video
               ref={videoRef}
               controls
               autoPlay
               className="w-full h-full object-contain"
             />
-            {/* Subtle glow behind the player */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 py-12">
-        <div className="grid lg:grid-cols-12 gap-12 items-start">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
           {/* Main Info */}
-          <div className="lg:col-span-8 space-y-12">
+          <div className="lg:col-span-8 space-y-10 sm:space-y-12">
             
             {/* Episode Selector - Enhanced */}
             {series?.list?.length > 0 && (
-              <div className="space-y-6">
+              <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="flex items-center gap-3">
                   <span className="h-5 w-1 bg-blue-500 rounded-full"></span>
-                  <h2 className="text-xl font-black uppercase tracking-tight text-white">
+                  <h2 className="text-lg sm:text-xl font-black uppercase tracking-tight text-white">
                     Select Episode
                   </h2>
                 </div>
-                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-10 gap-3">
+                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2 sm:gap-3">
                   {series.list.map((ep, index) => (
                     <button
                       key={index}
                       onClick={() => handleEpisodeSelect(series.root_info, ep.fs_id, index)}
-                      className={`h-12 rounded-xl font-bold transition-all duration-300 ${
+                      className={`h-10 sm:h-12 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 ${
                         activeEpisode === index
                           ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20 ring-2 ring-blue-400'
                           : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white border border-white/5'
@@ -174,30 +172,30 @@ const StreamingMovies = () => {
             )}
 
             {/* Metadata Card */}
-            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
               <div className="space-y-4">
-                <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter text-white leading-tight">
+                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tighter text-white leading-tight">
                   {movieInfo?.personalized_name || movieInfo?.process_name || 'Untitled'}
                 </h1>
                 
-                <div className="flex flex-wrap gap-4 items-center text-xs font-bold uppercase tracking-widest">
+                <div className="flex flex-wrap gap-2 sm:gap-4 items-center text-[10px] sm:text-xs font-bold uppercase tracking-widest">
                   {tagInfo?.year && (
-                    <div className="flex items-center gap-2 text-blue-400 bg-blue-400/10 px-3 py-1.5 rounded-lg border border-blue-400/20">
+                    <div className="flex items-center gap-2 text-blue-400 bg-blue-400/10 px-2.5 py-1.5 rounded-lg border border-blue-400/20">
                       <FaCalendarAlt /> {tagInfo.year}
                     </div>
                   )}
                   {shareInfo?.duration && (
-                    <div className="flex items-center gap-2 text-cyan-400 bg-cyan-400/10 px-3 py-1.5 rounded-lg border border-cyan-400/20">
+                    <div className="flex items-center gap-2 text-cyan-400 bg-cyan-400/10 px-2.5 py-1.5 rounded-lg border border-cyan-400/20">
                       <FaClock /> {formatDuration(shareInfo.duration)}
                     </div>
                   )}
                   {tagInfo?.type && (
-                    <div className="text-slate-300 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+                    <div className="text-slate-300 bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/5">
                       {tagInfo.type}
                     </div>
                   )}
                   {movieInfo?.country && (
-                    <div className="text-slate-500 border-l border-white/10 pl-4">
+                    <div className="text-slate-500 border-l border-white/10 pl-3 sm:pl-4">
                       {movieInfo.country}
                     </div>
                   )}
@@ -205,24 +203,24 @@ const StreamingMovies = () => {
               </div>
 
               <div className="space-y-4">
-                <h3 className="text-sm font-black uppercase tracking-widest text-blue-500">Synopsis</h3>
-                <p className="text-slate-400 text-lg leading-relaxed max-w-4xl font-medium">
+                <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-blue-500">Synopsis</h3>
+                <p className="text-slate-400 text-base sm:text-lg leading-relaxed max-w-4xl font-medium">
                   {movieInfo?.description || 'No description available.'}
                 </p>
               </div>
 
               {(tagInfo?.actor || tagInfo?.director) && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-8 border-t border-white/5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 pt-8 border-t border-white/5">
                   {tagInfo.director && (
                     <div className="space-y-2">
-                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600 block">Director</span>
-                      <span className="text-white font-bold">{tagInfo.director}</span>
+                      <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-600 block">Director</span>
+                      <span className="text-white text-sm sm:text-base font-bold">{tagInfo.director}</span>
                     </div>
                   )}
                   {tagInfo.actor && (
                     <div className="space-y-2">
-                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600 block">Lead Cast</span>
-                      <span className="text-white font-bold leading-relaxed">{tagInfo.actor}</span>
+                      <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-600 block">Lead Cast</span>
+                      <span className="text-white text-sm sm:text-base font-bold leading-relaxed">{tagInfo.actor}</span>
                     </div>
                   )}
                 </div>
@@ -230,23 +228,23 @@ const StreamingMovies = () => {
             </div>
           </div>
 
-          {/* Sidebar Area (Potential for related content) */}
-          <div className="lg:col-span-4 space-y-8">
-             <div className="glass-surface p-8 rounded-3xl space-y-6">
+          {/* Sidebar Area */}
+          <div className="lg:col-span-4 space-y-6 sm:space-y-8">
+             <div className="glass-surface p-6 sm:p-8 rounded-2xl sm:rounded-3xl space-y-6">
                 <div className="space-y-2">
-                  <h4 className="text-sm font-black uppercase tracking-widest text-white">Streaming Quality</h4>
-                  <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">Ultra High Definition</p>
+                  <h4 className="text-xs sm:text-sm font-black uppercase tracking-widest text-white">Streaming Quality</h4>
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest text-blue-500/80">Ultra High Definition</p>
                 </div>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-slate-400">
+                  <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
                     <span>Server Status</span>
-                    <span className="text-green-500 flex items-center gap-1">
+                    <span className="text-green-500 flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
                       Operational
                     </span>
                   </div>
                   <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                    <div className="h-full w-[95%] bg-blue-500"></div>
+                    <div className="h-full w-[98%] bg-blue-500 transition-all duration-1000 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
                   </div>
                 </div>
              </div>
