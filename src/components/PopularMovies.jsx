@@ -16,7 +16,6 @@ export default function PopularMovies({popularMovies, source="filmapik"}) {
       }
       return (
         <section className="px-4 md:px-10">
-            {console.log('pop',popularMovies)}
           <div className="container mx-auto">
             {/* Section Badge */}
            

@@ -16,11 +16,11 @@ export default function PopularAnimation({popularAnimation, source="filmapik"}) 
       }
       return (
         <section className="px-4 md:px-10">
-            {console.log('pop',popularAnimation)}
+            {/* {console.log('pop',popularAnimation)} */}
           <div className="container mx-auto">
             {/* Section Badge */}
             
-            <Headers title="Popular Animation" url="/animation"/>
+            <Headers title="Popular Animation" url="/popular-animation"/>
             
             <div className="relative">
               {/* Decorative Glow */}

@@ -18,10 +18,6 @@ function App() {
     hot:[],
     tvShow:[],
     animation:[]
-    
-    // top: [],
-    // trending: [],
-    // latest: [],
   })
   const [loading, setLoading] = useState(true)
 
@@ -39,9 +35,6 @@ function App() {
           // `${base_api}/api/movies/v1/latest?page=1`,
           // `${base_api}/api/movies/v2/indo-movie?page=1`,
         ]
-
-        // Jalankan paralel + cache otomatis dari browser
-        // trendRes, latestRes,indoRes
         const [hotRes,tvShowRes,AnimationRes] = await Promise.all(
           urls.map((url) =>
             fetch(url, { cache: 'force-cache' }).then((r) => r.json())
@@ -49,7 +42,6 @@ function App() {
         )
 
         if (!isMounted) return
-        console.log("hot", hotRes)
         setMovies({
           hot: hotRes.detail || [],
           tvShow: tvShowRes.detail || [],

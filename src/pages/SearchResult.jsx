@@ -66,7 +66,6 @@ export default function SearchResult() {
           return [...acc, ...(curr.detail || [])];
         }, []);
 
-        // DEDUPLIKASI: Wajib aktif karena fetch dari 2 API berbeda rawan data ganda
         const uniqueMovies = Array.from(
           new Map(
             combined

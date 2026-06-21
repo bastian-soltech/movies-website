@@ -8,6 +8,8 @@ import SearchResult from './pages/SearchResult.jsx'
 import StreamingLink from './pages/StreamingLink.jsx'
 import NotFound from './pages/NotFound.jsx'
 import PopularMoviesPage from './pages/PopularMovies.jsx'
+import PopularSerialPage from './pages/PopularSerial.jsx'
+import PopularAnimationPage from './pages/PopularAnimation.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>  
@@ -19,6 +21,8 @@ createRoot(document.getElementById('root')).render(
       <Route path="/movies/streaming/:link" element={<StreamingLink />} />
       <Route path="/movies/search?" element={<SearchResult />} />
       <Route path="/popular" element={<PopularMoviesPage />} />
+      <Route path="/popular-serial" element={<PopularSerialPage />} />
+      <Route path="/popular-animation" element={<PopularAnimationPage />} />
     </Routes>
     </BrowserRouter>
   </StrictMode>,

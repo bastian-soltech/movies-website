@@ -20,7 +20,7 @@ export default function TvShow({Serial, source="filmapik"}) {
           <div className="container mx-auto">
             {/* Section Badge */}
             
-            <Headers title="Popular Serial" url="/popular"/>
+            <Headers title="Popular Serial" url="/popular-serial"/>
             
             <div className="relative">
               {/* Decorative Glow */}

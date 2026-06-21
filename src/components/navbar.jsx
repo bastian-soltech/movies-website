@@ -55,9 +55,9 @@ export default function NavBar({source = 'filmapik'}) {
             <div className="hidden lg:flex items-center space-x-1">
               {[
                 { label: 'Home', href: '/' },
-                { label: 'Trending', href: '/trending' },
-                { label: 'Latest', href: '/latest' },
-                { label: 'Popular', href: '/popular' }
+                { label: 'Movies', href: '/popular' },
+                { label: 'Serial', href: '/popular-serial' },
+                { label: 'Animation', href: '/popular-animation' }
               ].map((item) => (
                 <a 
                   key={item.label}
