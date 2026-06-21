@@ -70,7 +70,7 @@ export default function SearchResult() {
         const uniqueMovies = Array.from(
           new Map(
             combined
-              .filter(m => m?.resource_info?.enid) // pastikan ID ada
+              .filter(m => m?.resource_info?.enid && m?.resource_info?.adult == 0) // pastikan ID ada
               .map(m => [m.resource_info.enid, m])
           ).values()
         );
